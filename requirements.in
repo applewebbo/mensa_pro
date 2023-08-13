@@ -1,4 +1,4 @@
 black
 django>=4.2,<4.3
-pip-tools
+django-environ==0.10.0
 pre-commit
