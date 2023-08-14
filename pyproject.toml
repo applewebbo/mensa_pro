@@ -16,5 +16,13 @@ skip_covered = true
 profile = "black"
 src_paths = ["core"]
 
+[tool.pytest.ini_options]
+addopts = "--nomigrations --disable-socket"
+DJANGO_SETTINGS_MODULE = "core.testing_settings"
+filterwarnings = [
+    # Enable warnings as errors.
+    "error",
+]
+
 [tool.ruff]
 line-length=119
