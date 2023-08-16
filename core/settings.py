@@ -34,6 +34,10 @@ ALLOWED_HOSTS: list[str] = env("ALLOWED_HOSTS")
 # Application definition
 
 INSTALLED_APPS = [
+    # First party
+    "accounts",
+    # Third party
+    # Contrib
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -124,3 +128,5 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTH_USER_MODEL = "accounts.CustomUser"

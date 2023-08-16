@@ -26,3 +26,6 @@ filterwarnings = [
 
 [tool.ruff]
 line-length=119
+
+[tool.ruff.per-file-ignores]
+"*/migrations/*.py"= ['E501']
