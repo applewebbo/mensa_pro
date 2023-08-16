@@ -21,11 +21,14 @@ django==4.2.4
     #   -r requirements.in
     #   django-allauth
     #   django-browser-reload
+    #   django-htmx
 django-allauth==0.54.0
     # via -r requirements.in
 django-browser-reload==1.11.0
     # via -r requirements.in
 django-environ==0.10.0
+    # via -r requirements.in
+django-htmx==1.16.0
     # via -r requirements.in
 idna==3.4
     # via requests

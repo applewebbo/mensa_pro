@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "django_browser_reload",
+    "django_htmx",
     # Contrib
     "django.contrib.admin",
     "django.contrib.auth",
@@ -59,6 +60,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django_htmx.middleware.HtmxMiddleware",
     "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
