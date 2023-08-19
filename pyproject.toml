@@ -17,11 +17,16 @@ profile = "black"
 src_paths = ["core"]
 
 [tool.pytest.ini_options]
-addopts = "--nomigrations --disable-socket"
 DJANGO_SETTINGS_MODULE = "core.testing_settings"
+python_files = "test_*.py"
+addopts = "--nomigrations --disable-socket"
 filterwarnings = [
-    # Enable warnings as errors.
     "error",
+    "ignore:The --rsyncdir command line argument and rsyncdirs config variable are deprecated.:DeprecationWarning",
+]
+testpaths = [
+    "accounts",
+    "meals",
 ]
 
 [tool.ruff]

@@ -12,8 +12,8 @@ checkmigrations:
 	python manage.py makemigrations --check --no-input --dry-run
 
 coverage:
-	pytest --cov --migrations -n 2 --dist loadfile
+	pytest --cov=. --cov-report term-missing:skip-covered --cov-fail-under 100 --migrations -n 2 --dist loadfile
 
 fcov:
 	@echo "Running fast coverage check"
-	@pytest --cov -n 4 --dist loadfile -q
+	@pytest --cov=. -n 4 --dist loadfile -q
