@@ -4,22 +4,6 @@ skips = ["B101"]
 [tool.black]
 line-length = 119
 
-[tool.coverage.run]
-source = ['.']
-
-[tool.coverage.report]
-fail_under = 100
-omit = [
-    "*/migrations/*",
-    "*/tests/*",
-    "*manage.py*",
-    "*asgi*",
-    "*wsgi*",
-    "*urls.py*",
-]
-show_missing = true
-skip_covered = true
-
 [tool.isort]
 profile = "black"
 src_paths = ["core"]
@@ -28,14 +12,6 @@ src_paths = ["core"]
 DJANGO_SETTINGS_MODULE = "core.testing_settings"
 python_files = "test_*.py"
 addopts = "--nomigrations --disable-socket"
-filterwarnings = [
-    "error",
-    "ignore:The --rsyncdir command line argument and rsyncdirs config variable are deprecated.:DeprecationWarning",
-]
-testpaths = [
-    "accounts",
-    "meals",
-]
 
 [tool.ruff]
 line-length=119

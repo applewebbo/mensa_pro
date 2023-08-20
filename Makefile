@@ -11,9 +11,13 @@ requirements:
 checkmigrations:
 	python manage.py makemigrations --check --no-input --dry-run
 
-coverage:
-	pytest --cov --migrations -n 2 --dist loadfile
 
-fcov:
-	@echo "Running fast coverage check"
-	@pytest --cov=. -n 4 --dist loadfile -q
+# coverage:
+# 	pytest --cov --migrations -n 2 --dist loadfile
+
+test:
+		pytest --migrations -n 2 --dist loadfile
+
+# fcov:
+# 	@echo "Running fast coverage check"
+# 	@pytest --cov=. -n 4 --dist loadfile -q
