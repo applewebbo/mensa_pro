@@ -1,11 +1,14 @@
+import pytest
 from accounts.tests.factories import CustomUserFactory
+
+pytestmark = pytest.mark.django_db
 
 
 class TestCustomUser:
     def test_factory(self):
         """The factory produces a valid user instance"""
 
-        user = CustomUserFactory()
+        user = CustomUserFactory(email="test@test.com")
 
         assert user is not None
-        assert str(user) == user.email
+        assert user.__str__() == "test@test.com"
