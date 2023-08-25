@@ -1,3 +1,5 @@
+target-version = "py311"
+
 [tool.bandit]
 skips = ["B101"]
 
@@ -14,7 +16,5 @@ python_files = "test_*.py"
 addopts = "--nomigrations --disable-socket"
 
 [tool.ruff]
-ignore = ["E501"]
-
-# [tool.ruff.per-file-ignores]
-# # "*/migrations/*.py"= ['E501']
+select = ["E", "F"]
+ignore = ["E501", "E741"]
