@@ -1,8 +1,4 @@
-// Custom.scss
-// Option B: Include parts of Bootstrap
-
-// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
-@import "../../src/scss/functions";
+@import "../../src/scss/bootstrap";
 
 $primary : #1B6B93;
 $light: #F4FBFF;
@@ -21,28 +17,3 @@ $spacers: (
 ) !default;
 
 $line-height-base: 1.7;
-
-// 3. Include remainder of required Bootstrap stylesheets (including any separate color mode stylesheets)
-@import "../../src/scss/variables";
-@import "../../src/scss/variables-dark";
-
-// 4. Include any default map overrides here
-
-// 5. Include remainder of required parts
-@import "../../src/scss/maps";
-@import "../../src/scss/mixins";
-@import "../../src/scss/root";
-
-// 6. Optionally include any other parts as needed
-@import "../../src/scss/utilities";
-@import "../../src/scss/reboot";
-@import "../../src/scss/type";
-@import "../../src/scss/images";
-@import "../../src/scss/containers";
-@import "../../src/scss/grid";
-@import "../../src/scss/helpers";
-
-// 7. Optionally include utilities API last to generate classes based on the Sass map in `_utilities.scss`
-@import "../../src/scss/utilities/api";
-
-// 8. Add additional custom code here
