@@ -1,5 +1,7 @@
 from django.conf import settings
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Menu(models.Model):
@@ -52,5 +54,16 @@ class Meal(models.Model):
     week = models.SmallIntegerField(choices=Weeks.choices, default=Weeks.SETTIMANA_1)
 
     def __str__(self):
-        # TODO: modify here after model is completed with day and type fields
-        return f"{self.menu.title} (#day - #type)"
+        return f"{self.menu.title} ({self.menu.get_type_display()} - {self.get_day_display()})"
+
+
+@receiver(post_save, sender=Menu)
+def menu_post_save(sender, instance, created, *args, **kwargs):
+    # TODO: add check for week already present to implement automatic progressive week (up to 4)
+    if created:
+        menu = instance
+        days_choices = Meal._meta.get_field("day").choices
+        days = [label for label, day in days_choices]
+        for day in days:
+            meal = Meal.objects.create(menu=menu, day=day)
+            meal.save()

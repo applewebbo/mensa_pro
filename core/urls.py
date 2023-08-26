@@ -10,4 +10,5 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     path("__reload__/", include("django_browser_reload.urls")),
     path("", views.index, name="home"),
+    path("meals/", include("meals.urls", namespace="meals")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
