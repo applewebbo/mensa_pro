@@ -8,6 +8,7 @@ from . import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
+    path("accounts/", include("accounts.urls", namespace="accounts")),
     path("__reload__/", include("django_browser_reload.urls")),
     path("", views.index, name="home"),
     path("meals/", include("meals.urls", namespace="meals")),

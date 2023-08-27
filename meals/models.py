@@ -59,7 +59,7 @@ class Meal(models.Model):
 
 @receiver(post_save, sender=Menu)
 def menu_post_save(sender, instance, created, *args, **kwargs):
-    # TODO: add check for week already present to implement automatic progressive week (up to 4)
+    # TODO: add check for weeks already present to implement automatic progressive week (up to 4)
     if created:
         menu = instance
         days_choices = Meal._meta.get_field("day").choices

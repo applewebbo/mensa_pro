@@ -2,5 +2,12 @@
 {% block title %}{% endblock title %}
 
 {% block content %}
-  <h1>Home Page</h1>
+  <div class="container mt-5">
+    <h1 class="mb-3">Home Page</h1>
+    <h3 class="m-3">Temporary Links</h3>
+    <ul class="list-unstyled">
+      <li><a href="{% url 'accounts:profile' %}">Profile Page</a></li>
+      <li><a href="{% url 'meals:menu_create' %}">Create a menu</a></li>
+    </ul>
+  </div>
 {% endblock content %}
