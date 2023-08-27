@@ -32,17 +32,17 @@ class Menu(models.Model):
 
 class Meal(models.Model):
     class Days(models.IntegerChoices):
-        LUNEDÌ = 1
-        MARTEDÌ = 2
-        MERCOLEDÌ = 3
-        GIOVEDÌ = 4
-        VENERDÌ = 5
+        MONDAY = 1
+        TUESDAY = 2
+        WEDNESDAY = 3
+        THURSDAY = 4
+        FRIDAY = 5
 
     class Weeks(models.IntegerChoices):
-        SETTIMANA_1 = 1
-        SETTIMANA_2 = 2
-        SETTIMANA_3 = 3
-        SETTIMANA_4 = 4
+        WEEK_1 = 1
+        WEEK_2 = 2
+        WEEK_3 = 3
+        WEEK_4 = 4
 
     first_course = models.CharField(max_length=200)
     second_course = models.CharField(max_length=200)
@@ -50,8 +50,8 @@ class Meal(models.Model):
     fruit = models.CharField(max_length=200)
     snack = models.CharField(max_length=200)
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
-    day = models.SmallIntegerField(choices=Days.choices, default=Days.LUNEDÌ)
-    week = models.SmallIntegerField(choices=Weeks.choices, default=Weeks.SETTIMANA_1)
+    day = models.SmallIntegerField(choices=Days.choices, default=Days.MONDAY)
+    week = models.SmallIntegerField(choices=Weeks.choices, default=Weeks.WEEK_1)
 
     def __str__(self):
         return f"{self.menu.title} ({self.menu.get_type_display()} - {self.get_day_display()})"
