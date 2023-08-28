@@ -1,0 +1,22 @@
+{% if week_has_meals %}
+  <div class="col-12">
+    <h4 class="m-3 text-center">Week {{forloop.counter}}</h4>
+  </div>
+  {% for meal in weekly_meals %}
+    <div class="col-md-6 col-lg-4 col-xl-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <h5 class="mb-3">{{meal.get_day_display}}</h5>
+          <ul class="list-unstyled">
+            <li>{% if meal.first_course %}{{meal.first_course}}{% else %}-{% endif %}</li>
+            <li>{% if meal.second_course %}{{meal.second_course}}{% else %}-{% endif %}</li>
+            <li>{% if meal.side_dish %}{{meal.side_dish}}{% else %}-{% endif %}</li>
+            <li>{% if meal.fruit %}{{meal.fruit}}{% else %}-{% endif %}</li>
+            <li>{% if meal.snack %}{{meal.snack}}{% else %}-{% endif %}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+
+{% endif %}

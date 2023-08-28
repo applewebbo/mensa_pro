@@ -25,9 +25,11 @@
         <!--  Active Menus  -->
         {% for menu in menus %}
           {% if menu.active %}
-            <h5 class="mb-4">Active Menus</h5>
-            <div>
-              <h6 class="mb-3">{{menu.title}}</h6>
+            <div class="mb-5">
+              <h5 class="mb-4">Active Menus</h5>
+              <div>
+                <h6 class="mb-3"><a href="{% url 'meals:menu_view' menu.pk %}">{{menu.title}}</a></h6>
+              </div>
             </div>
           {% endif %}
         {% endfor %}
@@ -35,9 +37,11 @@
         <!-- Not Active Menus -->
         {% for menu in menus %}
           {% if not menu.active %}
-            <h5 class="mb-4">Not Active Menus</h5>
-            <div>
-              <h6 class="mb-3">{{menu.title}}</h6>
+            <div class="mb-5">
+              <h5 class="mb-4">Not Active Menus</h5>
+              <div>
+                <h6 class="mb-3"><a href="{% url 'meals:menu_view' menu.pk %}">{{menu.title}}</a></h6>
+              </div>
             </div>
           {% endif %}
         {% endfor %}

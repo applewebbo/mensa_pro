@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load extra_filters %}
+
+{% block title %}{{menu.title}} View{% endblock title %}
+
+
+{% block content %}
+  <div class="container m-5">
+    <h1 class="m-4">{{menu.title}}</h1>
+    {% for week in weeks %}
+      <div class="row g-4">
+        {% show_meals_of_the_week week %}
+      </div>
+    {% endfor %}
+  </div>
+{% endblock content %}

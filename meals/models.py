@@ -49,7 +49,7 @@ class Meal(models.Model):
     side_dish = models.CharField(max_length=200)
     fruit = models.CharField(max_length=200)
     snack = models.CharField(max_length=200)
-    menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
+    menu = models.ForeignKey(Menu, on_delete=models.CASCADE, related_name="meals")
     day = models.SmallIntegerField(choices=Days.choices, default=Days.MONDAY)
     week = models.SmallIntegerField(choices=Weeks.choices, default=Weeks.WEEK_1)
 
