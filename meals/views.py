@@ -28,7 +28,30 @@ def menu_view(request, pk):
     queryset = Menu.objects.prefetch_related("meals")
     menu = get_object_or_404(queryset, pk=pk)
     weeks = [number for number, name in Meal._meta.get_field("week").choices]
-    context = {"menu": menu, "weeks": weeks}
+    context = {
+        "menu": menu,
+        "weeks": weeks,
+    }
     for week in weeks:
         context["week_" + str(week) + "_meals"] = get_meals_per_week(menu, week)
     return render(request, "meals/menu-view.html", context)
+
+
+@login_required
+def single_menu_with_active_weeks(request, pk):
+    menu = Menu.objects.prefetch_related("meals").get(pk=pk)
+    weeks_choices = [number for number, name in Meal._meta.get_field("week").choices]
+    context = {}
+    max(weeks_choices)
+    weeks = {}
+    for week in weeks_choices:
+        meals_present = menu.meals.filter(week=week).exists()
+        weeks.update({week: meals_present})
+    print(weeks)
+    context["weeks"] = weeks
+    return render(request, "meals/includes/active-weeks.html", context)
+
+
+@login_required
+def menu_weekly_view(request, pk, week):
+    pass

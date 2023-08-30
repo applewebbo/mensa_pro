@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+  <div class="text-center py-2">
+    <div class="row row-cols-4 g-3 text-center">
+      {% for week, active in weeks.items %}
+        {% if active %}
+          <div class="col">
+            <div class="card text-bg-secondary">
+              <div class="card-body">
+                Week {{week}}
+              </div>
+            </div>
+          </div>
+        {% else %}
+          <div class="col">
+            <div class="card text-bg-light">
+              <div class="card-body">
+                Week {{week}}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+{% endblock content %}

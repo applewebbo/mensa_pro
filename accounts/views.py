@@ -6,7 +6,7 @@ from meals.models import Menu
 @login_required
 def profile(request):
     user = request.user
-    menus = Menu.objects.filter(user=user).prefetch_related("meal_set")
+    menus = Menu.objects.filter(user=user).prefetch_related("meals")
     context = {
         "user": user,
         "menus": menus,

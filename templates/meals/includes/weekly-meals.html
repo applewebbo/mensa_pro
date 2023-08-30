@@ -8,11 +8,11 @@
         <div class="card-body text-center">
           <h5 class="mb-3">{{meal.get_day_display}}</h5>
           <ul class="list-unstyled">
-            <li>{% if meal.first_course %}{{meal.first_course}}{% else %}-{% endif %}</li>
-            <li>{% if meal.second_course %}{{meal.second_course}}{% else %}-{% endif %}</li>
-            <li>{% if meal.side_dish %}{{meal.side_dish}}{% else %}-{% endif %}</li>
-            <li>{% if meal.fruit %}{{meal.fruit}}{% else %}-{% endif %}</li>
-            <li>{% if meal.snack %}{{meal.snack}}{% else %}-{% endif %}</li>
+            <li>{{meal.first_course}}</li>
+            <li>{{meal.second_course}}</li>
+            <li>{{meal.side_dish}}</li>
+            <li>{{meal.fruit}}</li>
+            <li>{{meal.snack}}</li>
           </ul>
         </div>
       </div>
