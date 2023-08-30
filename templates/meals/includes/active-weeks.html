@@ -9,7 +9,7 @@
           <div class="col">
             <div class="card text-bg-secondary">
               <div class="card-body">
-                Week {{week}}
+                <a href="{% url 'meals:menu_weekly_view' menu.pk week %}" class="link-light">Week {{week}}</a>
               </div>
             </div>
           </div>
@@ -17,7 +17,7 @@
           <div class="col">
             <div class="card text-bg-light">
               <div class="card-body">
-                Week {{week}}
+                +
               </div>
             </div>
           </div>
