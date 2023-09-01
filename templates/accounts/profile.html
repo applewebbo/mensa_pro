@@ -11,10 +11,10 @@
 {% endpartial%}
 
 {% block content %}
-  <div class="container mt-5">
-    <h2 class="mb-3">Profile of {{user.email}}</h2>
+  <div class="container mt-4">
+    <h2 class="mb-4">Profile of {{user.email}}</h2>
 
-    <div class="row g-5">
+    <div class="row g-4">
       <!--  Personal Info  -->
       <div class="col-md-6">
         <h3 class="mb-3">Personal Info</h3>
@@ -26,9 +26,12 @@
         <p class="text-muted">{% lorem 25 w %}</p>
       </div>
       <div class="col" id="menu-list">
-        <h3 class="mb-3">Menu Info</h3>
+        <h3 class="mb-3">
+          Menu Info
+          <button class="btn btn-sm btn-light" hx-post="{% url 'meals:menu_create'%}"
+          >Add Menu</button>
+        </h3>
 
         {% partial menu_list %}
-
       </div>
 {% endblock content %}
