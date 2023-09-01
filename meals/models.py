@@ -1,7 +1,16 @@
 from django.conf import settings
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+
+# from django.db.models.signals import post_save
+# from django.dispatch import receiver
+
+
+class School(models.Model):
+    name = models.CharField(max_length=200)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
 
 
 class Menu(models.Model):
@@ -11,8 +20,8 @@ class Menu(models.Model):
         LACTOSE_FREE = 3
         VEGAN = 4
 
-    title = models.CharField(max_length=200)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     type = models.SmallIntegerField(choices=Types.choices, default=Types.STANDARD)
@@ -25,9 +34,10 @@ class Menu(models.Model):
                 name="one_type_per_user",
             )
         ]
+        ordering = ["type"]
 
     def __str__(self):
-        return f"{self.title} ({self.user.email})"
+        return f"{self.school} ({self.get_type_display()})"
 
 
 class Meal(models.Model):
@@ -53,17 +63,20 @@ class Meal(models.Model):
     day = models.SmallIntegerField(choices=Days.choices, default=Days.MONDAY)
     week = models.SmallIntegerField(choices=Weeks.choices, default=Weeks.WEEK_1)
 
+    class Meta:
+        ordering = ["day"]
+
     def __str__(self):
-        return f"{self.menu.title} ({self.menu.get_type_display()} - {self.get_day_display()})"
+        return f"{self.menu.school} ({self.menu.get_type_display()} - {self.get_day_display()})"
 
 
-@receiver(post_save, sender=Menu)
-def menu_post_save(sender, instance, created, *args, **kwargs):
-    # TODO: add check for weeks already present to implement automatic progressive week (up to 4)
-    if created:
-        menu = instance
-        days_choices = Meal._meta.get_field("day").choices
-        days = [label for label, day in days_choices]
-        for day in days:
-            meal = Meal.objects.create(menu=menu, day=day)
-            meal.save()
+# @receiver(post_save, sender=Menu)
+# def menu_post_save(sender, instance, created, *args, **kwargs):
+#     # TODO: add check for weeks already present to implement automatic progressive week (up to 4)
+#     if created:
+#         menu = instance
+#         days_choices = Meal._meta.get_field("day").choices
+#         days = [label for label, day in days_choices]
+#         for day in days:
+#             meal = Meal.objects.create(menu=menu, day=day)
+#             meal.save()

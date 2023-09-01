@@ -7,8 +7,11 @@ from meals.models import Menu
 def profile(request):
     user = request.user
     menus = Menu.objects.filter(user=user).prefetch_related("meals")
+    active_menus = menus.filter(active=True)
+    inactive_menus = menus.filter(active=False)
     context = {
         "user": user,
-        "menus": menus,
+        "active_menus": active_menus,
+        "inactive_menus": inactive_menus,
     }
     return render(request, "accounts/profile.html", context)

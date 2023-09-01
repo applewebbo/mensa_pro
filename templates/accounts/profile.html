@@ -24,37 +24,54 @@
         <h3 class="mb-3">Menu Info</h3>
 
         <!--  Active Menus  -->
-        {% for menu in menus %}
-          {% if menu.active %}
-            <div class="mb-5">
-              <h5 class="mb-4">Active Menus</h5>
-              <div>
-                <h6 class="mb-3"><a href="{% url 'meals:menu_view' menu.pk %}">{{menu.title}}</a></h6>
-                <!--  Active Weeks  -->
-                <div hx-get="{% url 'meals:menu_weeks_view' menu.pk %}" hx-trigger="load"></div>
-              </div>
+        <div class="my-5">
+          <h5>Published Menus</h5>
+          <div>
+            <div class="row g-3">
+              {% for menu in active_menus %}
+                <div class="col-lg-6">
+                  <h6 class="mb-2">
+                    {{menu.get_type_display}}
+                    <button class="btn btn-sm btn-light" hx-post="{% url 'meals:menu_view' menu.pk %}"
+                    >View</button>
+                    <button class="btn btn-sm btn-light" hx-post="{% url 'meals:menu_hide' menu.pk %}"
+                            hx-confirm="Are you sure you want to unpublish {{menu.school}} ({{menu.get_type_display}})?">Hide</button>
+                    <button class="btn btn-sm btn-light" hx-post="{% url 'meals:menu_delete' menu.pk %}"
+                            hx-confirm="Are you sure you want to delete {{menu.school}} ({{menu.get_type_display}})?">Delete</button>
+                  </h6>
+              <!--  Active Weeks  -->
+                  <div hx-get="{% url 'meals:menu_weeks_view' menu.pk %}" hx-trigger="load"></div>
+                </div>
+              {% empty %}
+                <p class="fst-italic text-muted">No menu present here.</>
+              {% endfor %}
             </div>
-          {% endif %}
-        {% endfor %}
+          </div>
+        </div>
 
         <!-- Not Active Menus -->
-        {% for menu in menus %}
-          {% if not menu.active %}
-            <div class="mb-5">
-              <h5 class="mb-4">Not Active Menus</h5>
-              <div>
-                <h6 class="mb-3"><a href="{% url 'meals:menu_view' menu.pk %}">{{menu.title}}</a></h6>
-                <!--  Active Weeks  -->
-                <div hx-get="{% url 'meals:menu_weeks_view' menu.pk %}" hx-trigger="load"></div>
+        <div class="my-5">
+          <h5>Not Published Menus</h5>
+          <div>
+            {% for menu in inactive_menus %}
+              <div class="mb-3">
+                <h6 class="mb-2">
+                  {{menu.get_type_display}}
+                  <button class="btn btn-sm btn-light" hx-post="{% url 'meals:menu_view' menu.pk %}"
+                  >View</button>
+                  <button class="btn btn-sm btn-light" hx-post="{% url 'meals:menu_publish' menu.pk %}"
+                          hx-confirm="Are you sure you want to publish {{menu.school}} ({{menu.get_type_display}})?">Publish</button>
+                  <button class="btn btn-sm btn-light" hx-post="{% url 'meals:menu_delete' menu.pk %}"
+                          hx-confirm="Are you sure you want to delete {{menu.school}} ({{menu.get_type_display}})?">Delete</button>
+                </h6>
               </div>
-            </div>
-          {% endif %}
-        {% endfor %}
-
+            {% empty %}
+              <p class="fst-italic text-muted">No menu present here.</p>
+            {% endfor %}
+          </div>
+        </div>
       </div>
     </div>
-
-
 
   </div>
 {% endblock content %}
