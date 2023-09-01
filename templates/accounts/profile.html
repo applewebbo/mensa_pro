@@ -43,7 +43,7 @@
                   <div hx-get="{% url 'meals:menu_weeks_view' menu.pk %}" hx-trigger="load"></div>
                 </div>
               {% empty %}
-                <p class="fst-italic text-muted">No menu present here.</>
+                <p class="fst-italic text-muted">No menu present here.</p>
               {% endfor %}
             </div>
           </div>
