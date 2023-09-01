@@ -8,10 +8,11 @@ class TestMenu:
     def test_factory(self):
         """The factory produces a valid model instance"""
 
-        menu = MenuFactory(title="Menu Title")
+        menu = MenuFactory()
 
         assert menu is not None
-        assert menu.title == "Menu Title"
+        assert menu.user is not None
+        assert menu.school is not None
 
 
 class TestMeal:
