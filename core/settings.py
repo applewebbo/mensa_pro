@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     "django_browser_reload",
     "django_htmx",
+    "template_partials",
     # Contrib
     "django.contrib.admin",
     "django.contrib.auth",
@@ -69,11 +70,20 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "core.urls"
 
+# DJANGO-TEMPLATE-PARTIALS
+default_loaders = [
+    "django.template.loaders.filesystem.Loader",
+    "django.template.loaders.app_directories.Loader",
+]
+cached_loaders = [("django.template.loaders.cached.Loader", default_loaders)]
+partial_loaders = [("template_partials.loader.Loader", cached_loaders)]
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [BASE_DIR / "templates"],
-        "APP_DIRS": True,
+        # Comment this out when manually defining loaders.
+        # "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
@@ -81,9 +91,12 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
             ],
+            "debug": True,
+            "loaders": partial_loaders,
         },
     },
 ]
+
 
 WSGI_APPLICATION = "core.wsgi.application"
 

@@ -1,0 +1,23 @@
+<div class="my-5">
+  <h5>Not Published Menus</h5>
+  <div>
+    {% for menu in inactive_menus %}
+      <div class="mb-3">
+        <h6 class="mb-2">
+          {{menu.get_type_display}}
+          <button class="btn btn-sm btn-light" hx-post="{% url 'meals:menu_view' menu.pk %}"
+          >View</button>
+          <button class="btn btn-sm btn-light" hx-post="{% url 'meals:menu_publish' menu.pk %}"
+                  hx-target="#menu-list">Publish</button>
+          <button class="btn btn-sm btn-light" hx-post="{% url 'meals:menu_delete' menu.pk %}"
+                  hx-confirm="Are you sure you want to delete {{menu.school}} ({{menu.get_type_display}})?"
+                  hx-target="#menu-list">Delete</button>
+        </h6>
+      </div>
+    {% empty %}
+      <p class="fst-italic text-muted">No menu present here.</p>
+    {% endfor %}
+  </div>
+</div>
+</div>
+</div>

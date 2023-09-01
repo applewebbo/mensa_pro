@@ -1,5 +1,4 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
@@ -31,14 +30,25 @@ def menu_create(request):
     return render(request, "meals/menu-create.html", context)
 
 
+def get_active_and_inactive_menus(menu):
+    user = menu.user
+    menus = Menu.objects.filter(user=user)
+    active_menus = menus.filter(active=True)
+    inactive_menus = menus.filter(active=False)
+    context = {
+        "user": user,
+        "active_menus": active_menus,
+        "inactive_menus": inactive_menus,
+    }
+    return context
+
+
 @login_required
-def menu_delete(self, menu_id):
+def menu_delete(request, menu_id):
     menu = get_object_or_404(Menu, pk=menu_id)
     menu.delete()
-    return HttpResponse(
-        status=204,
-        headers={"HX-Trigger": "menuChanged"},
-    )
+    context = get_active_and_inactive_menus(menu)
+    return render(request, "accounts/profile.html#menu_list", context)
 
 
 @login_required
@@ -46,10 +56,8 @@ def menu_hide(request, menu_id):
     menu = get_object_or_404(Menu, pk=menu_id)
     menu.active = False
     menu.save()
-    return HttpResponse(
-        status=204,
-        headers={"HX-Trigger": "menuChanged"},
-    )
+    context = get_active_and_inactive_menus(menu)
+    return render(request, "accounts/profile.html#menu_list", context)
 
 
 @login_required
@@ -57,10 +65,8 @@ def menu_publish(request, menu_id):
     menu = get_object_or_404(Menu, pk=menu_id)
     menu.active = True
     menu.save()
-    return HttpResponse(
-        status=204,
-        headers={"HX-Trigger": "menuChanged"},
-    )
+    context = get_active_and_inactive_menus(menu)
+    return render(request, "accounts/profile.html#menu_list", context)
 
 
 def get_meals_per_week(menu, week_number):

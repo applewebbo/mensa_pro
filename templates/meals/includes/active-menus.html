@@ -1,0 +1,25 @@
+<div class="my-5">
+  <h5>Published Menus</h5>
+  <div>
+    <div class="row g-3">
+      {% for menu in active_menus %}
+        <div class="col-lg-6">
+          <h6 class="mb-2">
+            {{menu.get_type_display}}
+            <button class="btn btn-sm btn-light" hx-post="{% url 'meals:menu_view' menu.pk %}"
+            >View</button>
+            <button class="btn btn-sm btn-light" hx-post="{% url 'meals:menu_hide' menu.pk %}"
+                    hx-target="#menu-list">Hide</button>
+            <button class="btn btn-sm btn-light" hx-post="{% url 'meals:menu_delete' menu.pk %}"
+                    hx-confirm="Are you sure you want to delete {{menu.school}} ({{menu.get_type_display}})?"
+                    hx-target="#menu-list">Delete</button>
+          </h6>
+      <!--  Active Weeks  -->
+          <div hx-get="{% url 'meals:menu_weeks_view' menu.pk %}" hx-trigger="load"></div>
+        </div>
+      {% empty %}
+        <p class="fst-italic text-muted">No menu present here.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
