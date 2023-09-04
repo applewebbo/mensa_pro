@@ -15,17 +15,17 @@ def menu_create(request):
         school.name = "Generic"
         school.save()
     if request.method == "POST":
-        form = MenuForm(request.POST)
+        form = MenuForm(request.POST, user=user)
         if form.is_valid():
             menu = form.save(commit=False)
             menu.user = user
             menu.school = school
             menu.save()
             return redirect(reverse("accounts:profile"))
-        form = MenuForm(request.POST)
+        form = MenuForm(request.POST, user=user)
         context = {"form": form}
         return render(request, "meals/menu-create.html", context)
-    form = MenuForm()
+    form = MenuForm(user=user)
     context = {"form": form}
     return render(request, "meals/menu-create.html", context)
 
