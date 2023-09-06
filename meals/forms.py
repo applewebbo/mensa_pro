@@ -13,12 +13,12 @@ class MenuForm(forms.ModelForm):
 
     type = forms.ChoiceField(widget=forms.RadioSelect, choices=CHOICES)
 
-    def clean_type(self):
-        type = self.cleaned_data["type"]
-        user = self.user
-        if Menu.objects.filter(user=user, type=type).exists():
-            raise forms.ValidationError("Menu type already present in the list")
-        return type
+    # def clean_type(self):
+    #     type = self.cleaned_data["type"]
+    #     user = self.user
+    #     if Menu.objects.filter(user=user, type=type).exists():
+    #         raise forms.ValidationError("Menu type already present in the list")
+    #     return type
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")

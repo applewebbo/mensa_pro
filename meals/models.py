@@ -27,12 +27,12 @@ class Menu(models.Model):
     active = models.BooleanField(default=False)
 
     class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=["user", "type"],
-                name="one_type_per_user",
-            )
-        ]
+        # constraints = [
+        #     models.UniqueConstraint(
+        #         fields=["user", "type"],
+        #         name="one_type_per_user",
+        #     )
+        # ]
         ordering = ["type"]
 
     def __str__(self):
