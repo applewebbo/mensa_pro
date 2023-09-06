@@ -1,23 +1,27 @@
-<div class="my-3">
-  <h5>Not Published Menus</h5>
-  <div>
-    {% for menu in inactive_menus %}
-      <div class="mb-3">
-        <h6 class="mb-2">
-          {{menu.get_type_display}}
-          <button class="btn btn-sm btn-light" hx-post="{% url 'meals:menu_view' menu.pk %}"
-          >View</button>
-          <button class="btn btn-sm btn-light" hx-post="{% url 'meals:menu_publish' menu.pk %}"
-                  hx-target="#menu-list">Publish</button>
-          <button class="btn btn-sm btn-light" hx-post="{% url 'meals:menu_delete' menu.pk %}"
-                  hx-confirm="Are you sure you want to delete {{menu.school}} ({{menu.get_type_display}})?"
-                  hx-target="#menu-list">Delete</button>
-        </h6>
+<h5 class='mb-3'>Not Published Menus</h5>
+<div class="row g-3">
+  {% for menu in inactive_menus %}
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="mb-2">
+            {{menu.get_type_display}}
+        {% comment %} <button class="btn btn-sm btn-light" hx-post="{% url 'meals:menu_view' menu.pk %}"
+        >View</button> {% endcomment %}
+            <button class="btn btn-sm btn-light ms-5" hx-post="{% url 'meals:menu_publish' menu.pk %}"
+                    hx-target="#menu-list">Publish</button>
+        {% comment %} <button class="btn btn-sm btn-light" hx-post="{% url 'meals:menu_delete' menu.pk %}"
+                hx-confirm="Are you sure you want to delete {{menu.school}} ({{menu.get_type_display}})?"
+                hx-target="#menu-list">Delete</button> {% endcomment %}
+          </h6>
+      <!--  Active Weeks  -->
+          <div hx-get="{% url 'meals:menu_weeks_view' menu.pk %}" hx-trigger="load"></div>
+        </div>
       </div>
-    {% empty %}
-      <p class="fst-italic text-muted">No menu present here.</p>
-    {% endfor %}
-  </div>
+    </div>
+  {% empty %}
+    <p class="fst-italic text-muted">No menu present here.</p>
+  {% endfor %}
 </div>
 </div>
 </div>

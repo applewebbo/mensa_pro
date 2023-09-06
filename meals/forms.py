@@ -1,11 +1,10 @@
 from crispy_forms.helper import FormHelper
 from django import forms
-from django.forms import ModelForm
 
-from .models import Meal, Menu
+from .models import Meal, Menu, School
 
 
-class MenuForm(ModelForm):
+class MenuForm(forms.ModelForm):
     class Meta:
         model = Menu
         fields = ["type"]
@@ -27,7 +26,13 @@ class MenuForm(ModelForm):
         self.helper = FormHelper()
 
 
-class MealForm(ModelForm):
+class SchoolForm(forms.ModelForm):
+    class Meta:
+        model = School
+        fields = ["name"]
+
+
+class MealUpdateForm(forms.ModelForm):
     class Meta:
         model = Meal
-        fields = ["day", "first_course", "second_course", "side_dish", "fruit", "snack"]
+        fields = ["first_course", "second_course", "side_dish", "fruit", "snack"]

@@ -1,23 +1,23 @@
 <div class="text-center py-2">
   <div class="row row-cols-4 g-3 text-center">
     {% for week, active in weeks.items %}
-      {% if active %}
-        <div class="col">
-          <div class="card text-bg-secondary">
-            <div class="card-body">
+      <div class="col">
+        <div class="card {% if active %}text-bg-secondary{% else %}text-bg-light{% endif %}">
+          <div class="card-body">
+            {% if active %}
               <a href="{% url 'meals:menu_weekly_view' menu.pk week %}" class="link-light">Week {{week}}</a>
-            </div>
+            {% else %}
+              <a class="link-dark"
+                 hx-post="{% url 'meals:week_add' menu.pk week %}"
+                 hx-target="#menu-list">+ Week</a>
+            {% endif %}
           </div>
         </div>
-      {% else %}
-        <div class="col">
-          <div class="card text-bg-light">
-            <div class="card-body">
-              <a href="{% url 'meals:week_meals_create' menu.pk week %}">+</a>
-            </div>
-          </div>
-        </div>
-      {% endif %}
+        {% if active %}
+          <button class="btn btn-sm btn-light mt-3">Delete</button>
+          <button class="btn btn-sm btn-light mt-3">Load File</button>
+        {% endif %}
+      </div>
     {% endfor %}
   </div>
 </div>

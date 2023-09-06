@@ -1,0 +1,11 @@
+{% load crispy_forms_tags %}
+<form method="post"
+      hx-post="{% url 'meals:meal_update' meal.pk %}"
+      hx-target="#meal-{{meal.pk}}"
+      hx-swap="innerHTML">
+  {% csrf_token %}
+  {{ form|crispy }}
+  <div class="d-grid">
+    <button type="submit" class="btn btn-primary mt-3">Save</button>
+  </div>
+</form>

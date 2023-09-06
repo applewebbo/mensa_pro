@@ -1,33 +1,9 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, render
 
-from .forms import MealForm, MenuForm
-from .models import Meal, Menu, School
-
-
-@login_required
-def menu_create(request):
-    user = request.user
-    # TODO: create a path to create a school before menu if school is not present
-    school, created = School.objects.get_or_create(user=user)
-    if not school.name:
-        school.name = "Generic"
-        school.save()
-    if request.method == "POST":
-        form = MenuForm(request.POST, user=user)
-        if form.is_valid():
-            menu = form.save(commit=False)
-            menu.user = user
-            menu.school = school
-            menu.save()
-            return redirect(reverse("accounts:profile"))
-        form = MenuForm(request.POST, user=user)
-        context = {"form": form}
-        return render(request, "meals/menu-create.html", context)
-    form = MenuForm(user=user)
-    context = {"form": form}
-    return render(request, "meals/menu-create.html", context)
+from .forms import MealUpdateForm
+from .models import Meal, Menu
 
 
 def get_active_and_inactive_menus(menu):
@@ -41,14 +17,6 @@ def get_active_and_inactive_menus(menu):
         "inactive_menus": inactive_menus,
     }
     return context
-
-
-@login_required
-def menu_delete(request, menu_id):
-    menu = get_object_or_404(Menu, pk=menu_id)
-    menu.delete()
-    context = get_active_and_inactive_menus(menu)
-    return render(request, "accounts/profile.html#menu_list", context)
 
 
 @login_required
@@ -77,6 +45,10 @@ def get_weeks_choices():
     return [number for number, name in Meal._meta.get_field("week").choices]
 
 
+def get_days_choices():
+    return [number for number, name in Meal._meta.get_field("day").choices]
+
+
 @login_required
 def menu_view(request, menu_id):
     queryset = Menu.objects.prefetch_related("meals")
@@ -103,11 +75,13 @@ def single_menu_with_active_weeks(request, menu_id):
             break
     context = {"menu": menu}
     context["weeks"] = weeks
+    print(weeks)
     return render(request, "meals/includes/weeks.html", context)
 
 
 @login_required
 def menu_weekly_view(request, menu_id, week):
+    """Return a view for the meals in the given week, used in Menu View"""
     menu = Menu.objects.prefetch_related("meals").get(pk=menu_id)
     meals_of_the_week = menu.meals.filter(week=week)
     context = {
@@ -115,23 +89,45 @@ def menu_weekly_view(request, menu_id, week):
         "weekly_meals": meals_of_the_week,
         "week": week,
     }
+    if request.htmx:
+        return render(request, "meals/weekly-menu-view.html#meal_list", context)
     return render(request, "meals/weekly-menu-view.html", context)
 
 
 @login_required
-def week_meals_create(request, menu_id, week):
-    menu = Menu.objects.get(pk=menu_id)
+def add_week_to_menu(request, menu_id, week):
+    """ "Create a complete week of empty meals for the given week, used in Menu View"""
+    menu = get_object_or_404(Menu, pk=menu_id)
+    days = get_days_choices()
+    for day in days:
+        Meal.objects.create(menu=menu, week=week, day=day)
+    context = get_active_and_inactive_menus(menu)
+    print(context)
+    return render(request, "accounts/profile.html#menu_list", context)
+
+
+@login_required
+def meal_update(request, meal_id):
+    meal = get_object_or_404(Meal, pk=meal_id)
     if request.method == "POST":
-        form = MealForm(request.POST)
+        form = MealUpdateForm(request.POST, instance=meal)
         if form.is_valid():
-            meal = form.save(commit=False)
-            meal.menu = menu
-            meal.week = week
-            meal.save()
-            return redirect(reverse("meals:menu_view", args=[menu_id]))
-        form = MealForm(request.POST)
-        context = {"form": form, "menu": menu, "week": week}
-        return render(request, "meals/meal-create.html", context)
-    form = MealForm()
-    context = {"form": form, "menu": menu, "week": week}
-    return render(request, "meals/meal-create.html", context)
+            form.save()
+            return HttpResponse(
+                status=204,
+                headers={
+                    "HX-Trigger": "mealUpdated",
+                },
+            )
+        form = MealUpdateForm(instance=meal)
+        context = {
+            "form": form,
+            "meal": meal,
+        }
+        return render(request, "meals/meal-update.html", context)
+    form = MealUpdateForm(instance=meal)
+    context = {
+        "form": form,
+        "meal": meal,
+    }
+    return render(request, "meals/meal-update.html", context)

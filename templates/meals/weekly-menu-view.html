@@ -1,26 +1,46 @@
 {% extends 'base.html' %}
+{% load partials %}
 
-
-{% block content %}
-  <div class="container">
-    <h2 class="text-center m-3">{{menu.title}} - Week {{week}}</h2>
-    <div class="row g-3">
-      {% for meal in weekly_meals %}
-        <div class="col-md-6 col-lg-4 col-xl-3">
-          <div class="card">
-            <div class="card-body text-center">
-              <h5 class="mb-3">{{meal.get_day_display}}</h5>
-              <ul class="list-unstyled">
-                <li>{{meal.first_course}}</li>
-                <li>{{meal.second_course}}</li>
-                <li>{{meal.side_dish}}</li>
-                <li>{{meal.fruit}}</li>
-                <li>{{meal.snack}}</li>
-              </ul>
+{% startpartial meal_list%}
+<div class="row g-3"
+     hx-trigger="mealUpdated from:body"
+     hx-get="{% url 'meals:menu_weekly_view' menu.pk week %}"
+     hx-swap="outerHTML">
+  {% for meal in weekly_meals %}
+    <div class="col-md-6 col-lg-4 col-xl-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <h5 class="mb-3">{{meal.get_day_display}}</h5>
+          <div id="meal-{{meal.pk}}">
+            <ul class="list-unstyled">
+              <li>{{meal.first_course}}</li>
+              <li>{{meal.second_course}}</li>
+              <li>{{meal.side_dish}}</li>
+              <li>{{meal.fruit}}</li>
+              <li>{{meal.snack}}</li>
+            </ul>
+            <div class="d-grid">
+              <button class="btn btn-sm btn-light ms-2"
+                      hx-get="{% url 'meals:meal_update' meal.pk %}"
+                      hx-target="#meal-{{meal.pk}}"
+                      hx-swap="innerHTML">Edit</button>
             </div>
           </div>
         </div>
-      {% endfor %}
+      </div>
     </div>
+  {% endfor %}
+</div>
+{% endpartial%}
+
+{% block content %}
+  <div class="container">
+    <div class="d-flex justify-content-center">
+      <h2 class="m-3">Week {{week}}</h2>
+      <div class="ms-5">
+        <button class="btn btn-sm btn-light mt-3">Load File</button>
+      </div>
+    </div>
+    {% partial meal_list %}
   </div>
 {% endblock content %}

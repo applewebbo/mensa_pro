@@ -1,8 +1,7 @@
 from django.conf import settings
 from django.db import models
-
-# from django.db.models.signals import post_save
-# from django.dispatch import receiver
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class School(models.Model):
@@ -25,7 +24,7 @@ class Menu(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     type = models.SmallIntegerField(choices=Types.choices, default=Types.STANDARD)
-    active = models.BooleanField(default=True)
+    active = models.BooleanField(default=False)
 
     class Meta:
         constraints = [
@@ -70,13 +69,19 @@ class Meal(models.Model):
         return f"{self.menu.school} ({self.menu.get_type_display()} - {self.get_day_display()})"
 
 
-# @receiver(post_save, sender=Menu)
-# def menu_post_save(sender, instance, created, *args, **kwargs):
-#     # TODO: add check for weeks already present to implement automatic progressive week (up to 4)
-#     if created:
-#         menu = instance
-#         days_choices = Meal._meta.get_field("day").choices
-#         days = [label for label, day in days_choices]
-#         for day in days:
-#             meal = Meal.objects.create(menu=menu, day=day)
-#             meal.save()
+@receiver(post_save, sender=School)
+def school_post_save(sender, instance, created, *args, **kwargs):
+    """Create all menus related to the school with the default type active and the others not active"""
+    if created:
+        school = instance
+        types = [label for label, day in Menu._meta.get_field("type").choices]
+        default = Menu._meta.get_field("type").get_default()
+        user = school.user
+        for type in types:
+            if type == default:
+                meal = Menu.objects.create(
+                    user=user, school=school, type=type, active=True
+                )
+            else:
+                meal = Menu.objects.create(user=user, school=school, type=type)
+            meal.save()

@@ -2,12 +2,21 @@
 {% load extra_filters partials %}
 
 {% block title %}{{user.email}} Profile{% endblock title %}
+{% block modal %}
+  {% include 'includes/modal.html' %}
+{% endblock modal %}
 
 {% startpartial menu_list %}
-  <!--  Active Menus  -->
-{% include 'meals/includes/active-menus.html' %}
-  <!-- Not Active Menus -->
-{% include 'meals/includes/inactive-menus.html' %}
+<!--  Active Menus  -->
+<div class="py-3">
+  {% include 'meals/includes/active-menus.html' %}
+</div>
+
+<!-- Not Active Menus -->
+<div class="py-3">
+  {% include 'meals/includes/inactive-menus.html' %}
+</div>
+
 {% endpartial%}
 
 {% block content %}
@@ -15,21 +24,9 @@
     <h2 class="mb-4">Profile of {{user.email}}</h2>
 
     <div class="row g-4">
-      <!--  Personal Info  -->
-      <div class="col-md-6">
-        <h3 class="mb-3">Personal Info</h3>
-        <p class="text-muted">{% lorem 25 w %}</p>
-      </div>
-      <!--  School Info  -->
-      <div class="col-md-6">
-        <h3 class="mb-3">School Info</h3>
-        <p class="text-muted">{% lorem 25 w %}</p>
-      </div>
       <div class="col" id="menu-list">
         <h3 class="mb-3">
           Menu Info
-          <button class="btn btn-sm btn-light" hx-post="{% url 'meals:menu_create'%}"
-          >Add Menu</button>
         </h3>
 
         {% partial menu_list %}
