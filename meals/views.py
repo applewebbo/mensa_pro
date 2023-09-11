@@ -68,14 +68,15 @@ def active_weeks(request, menu_id):
     menu = Menu.objects.prefetch_related("meals").get(pk=menu_id)
     weeks_choices = get_weeks_choices()
     weeks = {}
+    last_week = 0
     for week in weeks_choices:
         meals_present = menu.meals.filter(week=week).exists()
         weeks.update({week: meals_present})
         if not meals_present:
             break
-    context = {"menu": menu}
+        last_week += 1
+    context = {"menu": menu, "last_week": last_week}
     context["weeks"] = weeks
-    print(weeks)
     return render(request, "meals/includes/weeks.html", context)
 
 
@@ -96,13 +97,21 @@ def menu_weekly_view(request, menu_id, week):
 
 @login_required
 def add_week_to_menu(request, menu_id, week):
-    """ "Create a complete week of empty meals for the given week, used in Menu View"""
+    """Create a complete week of empty meals for the given week, used in Menu View"""
     menu = get_object_or_404(Menu, pk=menu_id)
     days = get_days_choices()
     for day in days:
         Meal.objects.create(menu=menu, week=week, day=day)
     context = get_active_and_inactive_menus(menu)
-    print(context)
+    return render(request, "accounts/profile.html#menu_list", context)
+
+
+@login_required
+def cancel_week_from_menu(request, menu_id, week):
+    """Delete all meals for the given week"""
+    menu = get_object_or_404(Menu, pk=menu_id)
+    Meal.objects.filter(week=week, menu=menu).delete()
+    context = get_active_and_inactive_menus(menu)
     return render(request, "accounts/profile.html#menu_list", context)
 
 
