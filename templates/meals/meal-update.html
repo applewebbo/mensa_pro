@@ -4,8 +4,13 @@
       hx-target="#meal-{{meal.pk}}"
       hx-swap="innerHTML">
   {% csrf_token %}
-  {{ form|crispy }}
-  <div class="d-grid">
+  {% crispy form %}
+  <div class="text-end">
+    <button type="button"
+            class="btn btn-danger mt-3"
+            hx-get="{% url 'meals:menu_weekly_view' meal.menu.pk meal.week %}"
+            hx-swap="outerHTML"
+            hx-target="#meal-list">Cancel</button>
     <button type="submit" class="btn btn-primary mt-3">Save</button>
   </div>
 </form>

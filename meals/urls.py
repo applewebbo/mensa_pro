@@ -13,11 +13,7 @@ urlpatterns = [
 
 htmx_urlpatterns = [
     path("week-add/<int:menu_id>/<int:week>", views.add_week_to_menu, name="week_add"),
-    path(
-        "menu-weeks/<int:menu_id>",
-        views.single_menu_with_active_weeks,
-        name="menu_weeks_view",
-    ),
+    path("menu-weeks/<int:menu_id>", views.active_weeks, name="menu_active_weeks"),
     path("menu-hide/<int:menu_id>", views.menu_hide, name="menu_hide"),
     path("menu-publish/<int:menu_id>", views.menu_publish, name="menu_publish"),
     path("meal-update/<int:meal_id>", views.meal_update, name="meal_update"),

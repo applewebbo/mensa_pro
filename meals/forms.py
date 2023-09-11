@@ -36,3 +36,11 @@ class MealUpdateForm(forms.ModelForm):
     class Meta:
         model = Meal
         fields = ["first_course", "second_course", "side_dish", "fruit", "snack"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = "form-horizontal"
+        self.helper.form_tag = False
+        self.helper.label_class = "col-4 text-muted fw-light"  # or col-lg-2, etc
+        self.helper.field_class = "col-8"  # or col-lg-8, etc

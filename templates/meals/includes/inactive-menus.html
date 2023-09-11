@@ -15,7 +15,7 @@
                 hx-target="#menu-list">Delete</button> {% endcomment %}
           </h6>
       <!--  Active Weeks  -->
-          <div hx-get="{% url 'meals:menu_weeks_view' menu.pk %}" hx-trigger="load"></div>
+          <div hx-get="{% url 'meals:menu_active_weeks' menu.pk %}" hx-trigger="load"></div>
         </div>
       </div>
     </div>

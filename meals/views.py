@@ -64,7 +64,7 @@ def menu_view(request, menu_id):
 
 
 @login_required
-def single_menu_with_active_weeks(request, menu_id):
+def active_weeks(request, menu_id):
     menu = Menu.objects.prefetch_related("meals").get(pk=menu_id)
     weeks_choices = get_weeks_choices()
     weeks = {}
