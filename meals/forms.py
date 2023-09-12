@@ -1,4 +1,5 @@
 from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Field, Layout
 from django import forms
 
 from .models import Meal, Menu, School
@@ -42,5 +43,12 @@ class MealUpdateForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_class = "form-horizontal"
         self.helper.form_tag = False
-        self.helper.label_class = "col-4 text-muted fw-light"  # or col-lg-2, etc
-        self.helper.field_class = "col-8"  # or col-lg-8, etc
+        self.helper.label_class = "col-4 text-muted fw-light"
+        self.helper.field_class = "col-8"
+        self.helper.layout = Layout(
+            Field("first_course", css_class="form-control-sm"),
+            Field("second_course", css_class="form-control-sm"),
+            Field("side_dish", css_class="form-control-sm"),
+            Field("fruit", css_class="form-control-sm"),
+            Field("snack", css_class="form-control-sm"),
+        )
