@@ -13,16 +13,21 @@
             {% endif %}
           </div>
         </div>
-        {% if active %}
-          <button type="button" class="btn btn-sm btn-light mt-3">Load File</button>
-          {% if week == last_week %}
-            <button type="button" class="btn btn-sm btn-light mt-3"
-                    hx-post="{% url 'meals:week_cancel' menu.pk week %}"
-                    hx-target="#menu-list"
-                    hx-swap="outerHTML"
-                    hx-confirm="Are you sure to delete week #{{week}}?">Delete</button>
-          {% endif %}
+
+        <button type="button" class="btn btn-sm btn-light mt-3"
+                hx-get="{% url 'meals:week_upload' menu.pk week %}"
+                hx-target="#dialog">
+          Load File
+        </button>
+        {% if week == last_week %}
+          <button type="button" class="btn btn-sm btn-light mt-3"
+                  hx-post="{% url 'meals:week_cancel' menu.pk week %}"
+                  hx-target="#menu-list"
+                  hx-confirm="Are you sure to delete week #{{week}}?">
+            Delete
+          </button>
         {% endif %}
+
       </div>
     {% endfor %}
   </div>

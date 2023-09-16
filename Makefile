@@ -16,7 +16,8 @@ checkmigrations:
 # 	pytest --cov --migrations -n 2 --dist loadfile
 
 test:
-		pytest --migrations -n 2 --dist loadfile
+
+
 
 # fcov:
 # 	@echo "Running fast coverage check"

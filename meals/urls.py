@@ -22,6 +22,11 @@ htmx_urlpatterns = [
     path("menu-hide/<int:menu_id>", views.menu_hide, name="menu_hide"),
     path("menu-publish/<int:menu_id>", views.menu_publish, name="menu_publish"),
     path("meal-update/<int:meal_id>", views.meal_update, name="meal_update"),
+    path(
+        "week-upload/<int:menu_id>/<int:week>",
+        views.weekly_menu_upload,
+        name="week_upload",
+    ),
 ]
 
 urlpatterns += htmx_urlpatterns

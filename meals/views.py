@@ -1,9 +1,13 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy
+from tablib import Dataset
 
-from .forms import MealUpdateForm
+from .forms import MealUpdateForm, WeeklyMealUploadForm
 from .models import Meal, Menu
+from .resources import MealResource
 
 
 def get_active_and_inactive_menus(menu):
@@ -140,3 +144,39 @@ def meal_update(request, meal_id):
         "meal": meal,
     }
     return render(request, "meals/meal-update.html", context)
+
+
+@login_required
+def weekly_menu_upload(request, menu_id, week):
+    """Take the uploaded file and create/update the meals for the given week"""
+    get_object_or_404(Menu, pk=menu_id)
+    if request.method == "POST":
+        meal_resource = MealResource(menu_id=menu_id, week=week)
+        dataset = Dataset()
+        form = WeeklyMealUploadForm(
+            request.POST, request.FILES, menu_id=menu_id, week=week
+        )
+        if form.is_valid():
+            new_meals = request.FILES["menu"]
+            import_data = dataset.load(new_meals.read().decode("utf-8"), format="csv")
+
+            result = meal_resource.import_data(
+                import_data, dry_run=False, raise_errors=True
+            )
+
+            if not result.has_errors():
+                meal_resource.import_data(import_data)
+                messages.success(request, "Data imported successfully.")
+            else:
+                messages.error(request, "There were errors in the import file.")
+
+            return redirect(
+                reverse_lazy("meals:menu_weekly_view", args=[menu_id, week])
+            )
+
+    upload_form = WeeklyMealUploadForm(menu_id=menu_id, week=week)
+    context = {
+        "upload_form": upload_form,
+        "week": week,
+    }
+    return render(request, "meals/meal-import.html", context)

@@ -1,6 +1,8 @@
+from crispy_bootstrap5.bootstrap5 import FloatingField
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Field, Layout
+from crispy_forms.layout import Div, Field, Layout, Submit
 from django import forms
+from django.urls import reverse_lazy
 
 from .models import Meal, Menu, School
 
@@ -41,14 +43,39 @@ class MealUpdateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_class = "form-horizontal"
         self.helper.form_tag = False
-        self.helper.label_class = "col-4 text-muted fw-light"
-        self.helper.field_class = "col-8"
         self.helper.layout = Layout(
-            Field("first_course", css_class="form-control-sm"),
-            Field("second_course", css_class="form-control-sm"),
-            Field("side_dish", css_class="form-control-sm"),
-            Field("fruit", css_class="form-control-sm"),
-            Field("snack", css_class="form-control-sm"),
+            FloatingField("first_course"),
+            FloatingField("second_course"),
+            FloatingField("side_dish"),
+            FloatingField("fruit"),
+            FloatingField("snack"),
+        )
+
+
+class WeeklyMealUploadForm(forms.Form):
+    menu = forms.FileField()
+
+    def __init__(self, *args, **kwargs):
+        self.menu_id = kwargs.pop("menu_id")
+        self.week = kwargs.pop("week")
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_show_labels = False
+        self.helper.form_action = reverse_lazy(
+            "meals:week_upload", args=[self.menu_id, self.week]
+        )
+        # self.helper.disable_csrf = True
+        self.helper.layout = Layout(
+            Field("menu", accept=".csv"),
+            Div(
+                Submit("submit", "Save"),
+                Submit(
+                    "button",
+                    "Cancel",
+                    css_class="btn btn-danger",
+                    data_bs_dismiss="modal",
+                ),
+                css_class="text-end",
+            ),
         )

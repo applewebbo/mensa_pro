@@ -1,0 +1,11 @@
+{% load crispy_forms_tags %}
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title">Upload your menu for Week #{{week}}</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+  </div>
+  <div class="modal-body">
+    {% crispy upload_form %}
+    {% include 'includes/messages.html' %}
+  </div>
+</div>

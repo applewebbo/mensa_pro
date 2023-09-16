@@ -1,4 +1,5 @@
 from django.contrib import admin
+from import_export.admin import ImportExportModelAdmin
 
 from .models import Meal, Menu, School
 
@@ -9,7 +10,7 @@ class MenuAdmin(admin.ModelAdmin):
 
 
 @admin.register(Meal)
-class MealAdmin(admin.ModelAdmin):
+class MealAdmin(ImportExportModelAdmin):
     list_display = ["menu", "get_menu_type", "day", "week"]
 
     @admin.display(description="Menu Type", ordering="menu__type")

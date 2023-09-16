@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     "django_browser_reload",
     "django_htmx",
+    "import_export",
     "template_partials",
     # Contrib
     "django.contrib.admin",
@@ -220,3 +221,7 @@ ACCOUNT_USERNAME_REQUIRED = False
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+# DJANGO-IMPORT-EXPORT
+
+IMPORT_EXPORT_USE_TRANSACTIONS = True
