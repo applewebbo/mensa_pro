@@ -64,6 +64,11 @@ class Meal(models.Model):
 
     class Meta:
         ordering = ["day"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["menu", "week", "day"], name="unique_menu_week_day"
+            )
+        ]
 
     def __str__(self):
         return f"{self.menu.school} ({self.menu.get_type_display()} - {self.get_day_display()})"
