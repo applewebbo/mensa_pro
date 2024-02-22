@@ -14,7 +14,7 @@ charset-normalizer==3.2.0
     # via requests
 crispy-bootstrap5==0.7
     # via -r requirements.in
-cryptography==41.0.3
+cryptography==42.0.4
     # via pyjwt
 defusedxml==0.7.1
     # via python3-openid
@@ -48,7 +48,9 @@ oauthlib==3.2.2
 pycparser==2.21
     # via cffi
 pyjwt==2.8.0
-    # via django-allauth
+    # via
+    #   django-allauth
+    #   pyjwt
 python3-openid==3.2.0
     # via django-allauth
 requests==2.31.0
